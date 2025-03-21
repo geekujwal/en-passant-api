@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MyApp.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,21 +12,8 @@ builder.Services.AddControllers(options =>
     options.Conventions.Add(new RoutePrefixConvention("api/lilith"));
 });
 
-// todo transfer this logic to library for reuseability
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = "example",
-            ValidAudience = "example",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your-256-bit-secretyour-256-bit-secretyour-256-bit-secretyour-256-bit-secret")) // Your secret key
-        };
-    });
+// todo save this in secrets
+builder.Services.AddJwtAuthentication("your-256-bit-secretyour-256-bit-secretyour-256-bit-secretyour-256-bit-secret", "example", "example");
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
