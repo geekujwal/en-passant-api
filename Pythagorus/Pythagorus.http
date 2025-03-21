@@ -1,0 +1,6 @@
+@Pythagorus_HostAddress = http://localhost:5103
+
+GET {{Pythagorus_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

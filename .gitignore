@@ -1,0 +1,54 @@
+# Ignore build and bin/obj folders
+bin/
+obj/
+out/
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# User-specific files
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.cache
+*.csproj.user
+
+# Logs and debug files
+*.log
+*.bak
+*.swp
+logs/
+debug/
+
+# Ignore dependency caches
+node_modules/
+packages/
+.nuget/
+
+# Ignore IDE-specific files
+*.vs/
+.vs/
+*.DS_Store
+
+# Ignore runtime-generated files
+appsettings.Development.json
+appsettings.Production.json
+secrets.json
+.env
+
+# Ignore test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# Ignore API Gateway and Reverse Proxy files
+Gateway/bin/
+Gateway/obj/
+ReverseProxyConfig.json
+
+# Ignore published output
+publish/
