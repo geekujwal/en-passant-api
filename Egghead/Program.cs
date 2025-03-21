@@ -7,7 +7,6 @@ builder.Services.AddReverseProxy()
 
 builder.Services.AddJwtAuthentication("your-256-bit-secretyour-256-bit-secretyour-256-bit-secretyour-256-bit-secret", "example", "example");
 
-
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Admin", policy =>
         policy.RequireRole("Admin"));
