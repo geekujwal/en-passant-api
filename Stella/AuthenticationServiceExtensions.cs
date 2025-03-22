@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace MyApp.Auth
+namespace Stella.Auth
 {
     public static class AuthenticationServiceExtensions
     {
