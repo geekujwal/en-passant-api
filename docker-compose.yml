@@ -4,14 +4,22 @@ services:
     image: "rabbitmq:management"
     container_name: "rabbitmq"
     ports:
-      - "15672:15672"  # Management Console
-      - "5672:5672"    # RabbitMQ server
+      - "15672:15672"
+      - "5672:5672"
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
       RABBITMQ_DEFAULT_PASS: "guest"
     networks:
-      - rabbitmq-net
+      - app-net
+
+  redis:
+    image: "redis:8.0-M04-alpine3.21"
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+    networks:
+      - app-net
 
 networks:
-  rabbitmq-net:
+  app-net:
     driver: bridge

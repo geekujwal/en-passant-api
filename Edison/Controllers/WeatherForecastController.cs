@@ -24,15 +24,9 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<WeatherForecast>> Get()
+    public async Task<OkResult>  Get()
     {
         await _messageProducer.SendMessage();
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        return Ok();
     }
 }
