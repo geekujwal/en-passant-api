@@ -2,6 +2,7 @@ using Edison.Consumer;
 using Edison.GameHub;
 using Edison.Producer;
 using MassTransit;
+using Stella.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new RoutePrefixConvention("api/edison"));
+});
 
 builder.Services.AddSignalR();
 builder.Services.AddTransient<MessageProducer>();

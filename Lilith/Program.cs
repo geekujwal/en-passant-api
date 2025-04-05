@@ -1,4 +1,5 @@
 using Stella.Auth;
+using Stella.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
