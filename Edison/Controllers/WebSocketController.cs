@@ -8,9 +8,11 @@ public class WebSocketController : ControllerBase
 {
     // ws://localhost:5003/ws/2
     private readonly IWebSocketService _webSocketService;
-    public WebSocketController(IWebSocketService webSocketService)
+    private readonly IRedisService _redisService;
+    public WebSocketController(IWebSocketService webSocketService, IRedisService redisService)
     {
         _webSocketService = webSocketService;
+        _redisService = redisService;
     }
 
     [Route("/ws")]
@@ -23,18 +25,8 @@ public class WebSocketController : ControllerBase
 
             await _webSocketService.AddSocketAsync(socketId, webSocket);
 
-            // var buffer = new byte[1024 * 4];
-            // WebSocketReceiveResult result;
+            await _redisService.SetAsync(socketId, true, TimeSpan.FromDays(1));
 
-            // do
-            // {
-            //     result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            //     if (result.MessageType == WebSocketMessageType.Text)
-            //     {
-            //         await _webSocketService.BroadcastMessageAsync("Hello world");
-            //         await _webSocketService.ReceiveAsync(webSocket, result, buffer);
-            //     }
-            // } while (!result.CloseStatus.HasValue);
             await _webSocketService.ReceiveAsync(webSocket);
         }
         else

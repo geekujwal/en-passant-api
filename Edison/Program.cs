@@ -4,6 +4,7 @@ using Edison.GameHub;
 using Edison.Producer;
 using Edison.Services;
 using MassTransit;
+using StackExchange.Redis;
 using Stella.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,9 @@ builder.Services.AddControllers(options =>
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
+builder.Services.AddSingleton<IRedisService, RedisService>();
+builder.Services.AddHttpClient();
 builder.Services.AddTransient<MessageProducer>();
 builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
