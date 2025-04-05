@@ -36,7 +36,6 @@ public class WebSocketController : ControllerBase
             //     }
             // } while (!result.CloseStatus.HasValue);
             await _webSocketService.ReceiveAsync(webSocket);
-
         }
         else
         {
