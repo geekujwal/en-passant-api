@@ -21,21 +21,21 @@ builder.Services.AddTransient<MessageProducer>();
 
 builder.Services.AddMassTransit(x =>
 {
-      x.AddConsumer<HelloConsumer>();
+    x.AddConsumer<HelloConsumer>();
 
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host("localhost", "/", h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                });
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
 
-                cfg.ReceiveEndpoint("hello_queue", e =>
-                {
-                    e.ConfigureConsumer<HelloConsumer>(context);
-                });
-            });
+        cfg.ReceiveEndpoint("hello_queue", e =>
+        {
+            e.ConfigureConsumer<HelloConsumer>(context);
+        });
+    });
 });
 
 
@@ -50,6 +50,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+var webSocket = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2)
+};
+
+webSocket.AllowedOrigins.Add("https://localhost:5173");
+app.UseWebSockets(webSocket);
+
 
 app.MapControllers();
 
