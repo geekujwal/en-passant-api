@@ -1,6 +1,8 @@
+using Edison.Abstractions;
 using Edison.Consumer;
 using Edison.GameHub;
 using Edison.Producer;
+using Edison.Services;
 using MassTransit;
 using Stella.Middleware;
 
@@ -17,6 +19,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddSignalR();
 builder.Services.AddTransient<MessageProducer>();
+builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
 
 builder.Services.AddMassTransit(x =>
@@ -41,7 +44,6 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
