@@ -9,6 +9,8 @@ public class WebSocketController : ControllerBase
 {
     private static Dictionary<string, WebSocket> _clients = [];
 
+    // ws://localhost:5003/ws/2
+
     [Route("/ws/{clientId}")]
     public async Task Get(string clientId)
     {
