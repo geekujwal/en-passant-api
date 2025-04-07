@@ -1,6 +1,5 @@
 using Edison.Abstractions;
 using Edison.Consumer;
-using Edison.GameHub;
 using Edison.Producer;
 using Edison.Services;
 using MassTransit;
@@ -18,7 +17,6 @@ builder.Services.AddControllers(options =>
     options.Conventions.Add(new RoutePrefixConvention("api/edison"));
 });
 
-builder.Services.AddSignalR();
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 builder.Services.AddSingleton<IRedisService, RedisService>();
 builder.Services.AddHttpClient();
@@ -67,6 +65,5 @@ app.UseWebSockets(webSocket);
 
 app.MapControllers();
 
-app.MapHub<GameHub>("/game");
 
 app.Run();

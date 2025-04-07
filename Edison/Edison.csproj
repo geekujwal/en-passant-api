@@ -10,7 +10,6 @@
     <PackageReference Include="MassTransit" Version="8.4.0" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.3" />
     <PackageReference Include="Redis.OM" Version="0.7.6" />
     <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="11.0.0" />
   </ItemGroup>

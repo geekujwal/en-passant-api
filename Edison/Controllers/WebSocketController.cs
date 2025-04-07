@@ -6,7 +6,6 @@ namespace Edison.Controllers;
 #region snippet_Controller_Connect
 public class WebSocketController : ControllerBase
 {
-    // ws://localhost:5003/ws/2
     private readonly IWebSocketService _webSocketService;
     private readonly IRedisService _redisService;
     public WebSocketController(IWebSocketService webSocketService, IRedisService redisService)
@@ -15,7 +14,8 @@ public class WebSocketController : ControllerBase
         _redisService = redisService;
     }
 
-    [Route("/ws")]
+    // ws://localhost:5003/game
+    [Route("/game")]
     public async Task Get()
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
