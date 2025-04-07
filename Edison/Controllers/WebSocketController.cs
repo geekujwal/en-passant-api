@@ -1,4 +1,6 @@
+using System.Text.Json;
 using Edison.Abstractions;
+using Edison.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edison.Controllers;
@@ -7,16 +9,18 @@ namespace Edison.Controllers;
 public class WebSocketController : ControllerBase
 {
     private readonly IWebSocketService _webSocketService;
+    private readonly IGameHandler _gameHandler;
     private readonly IRedisService _redisService;
-    public WebSocketController(IWebSocketService webSocketService, IRedisService redisService)
+    public WebSocketController(IWebSocketService webSocketService, IRedisService redisService, IGameHandler gameHandler)
     {
         _webSocketService = webSocketService;
         _redisService = redisService;
+        _gameHandler = gameHandler;
     }
 
     // ws://localhost:5003/game
     [Route("/game")]
-    public async Task Get()
+    public async Task Get(CancellationToken cancellationToken)
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
@@ -27,7 +31,16 @@ public class WebSocketController : ControllerBase
 
             await _redisService.SetAsync(socketId, true, TimeSpan.FromDays(1));
 
-            await _webSocketService.ReceiveAsync(webSocket);
+            var data = await _webSocketService.ReceiveAsync(webSocket);
+            switch (data.Event)
+            {
+                case Contracts.SocketMessageEvent.Game:
+                    var game = JsonSerializer.Deserialize<GameState>(data.Payload);
+                    await _gameHandler.HandleGameAsync(game, cancellationToken);
+                    break;
+                default:
+                    throw new NotImplementedException("Method not implemented");
+            }
         }
         else
         {

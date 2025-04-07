@@ -1,4 +1,5 @@
 using System.Net.WebSockets;
+using Edison.Contracts;
 
 namespace Edison.Abstractions
 {
@@ -17,7 +18,7 @@ namespace Edison.Abstractions
         Task BroadcastMessageAsync(string message);
 
         // Task<WebSocketReceiveResult> ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer);
-        Task ReceiveAsync(WebSocket socket);
+        Task<WebSocketMessage> ReceiveAsync(WebSocket socket);
 
         Task HandleMessageAsync(string socketId, string message);
 

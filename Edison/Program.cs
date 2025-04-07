@@ -19,9 +19,11 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 builder.Services.AddSingleton<IRedisService, RedisService>();
+builder.Services.AddSingleton<IGameHandler, GameHandler>();
+builder.Services.AddSingleton<IGameService, GameService>();
+builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<MessageProducer>();
-builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
 
 builder.Services.AddMassTransit(x =>

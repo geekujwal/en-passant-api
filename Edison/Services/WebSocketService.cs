@@ -1,6 +1,9 @@
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Edison.Abstractions;
+using Edison.Contracts;
 
 namespace Edison.Services
 {
@@ -60,8 +63,7 @@ namespace Edison.Services
             return false;
         }
 
-        public async Task ReceiveAsync(WebSocket socket)
-        // public async Task<WebSocketReceiveResult> ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
+        public async Task<WebSocketMessage> ReceiveAsync(WebSocket socket)
         {
             var buffer = new byte[1024 * 4];
             WebSocketReceiveResult result;
@@ -73,8 +75,12 @@ namespace Edison.Services
                 if (result.MessageType == WebSocketMessageType.Text)
                 {
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                    await HandleMessageAsync(socket, message);
-                    await BroadcastMessageAsync($"Broadcast: {message}");
+                    var options = new JsonSerializerOptions
+                    {
+                        Converters = { new JsonStringEnumConverter() },
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    };
+                    return JsonSerializer.Deserialize<WebSocketMessage>(message, options);
                 }
 
             } while (!result.CloseStatus.HasValue);
@@ -83,6 +89,7 @@ namespace Edison.Services
             {
                 await CloseSocketAsync(kvp.Key, result.CloseStatus.Value, result.CloseStatusDescription);
             }
+            return new();
         }
 
         public async Task HandleMessageAsync(WebSocket socket, string message)
